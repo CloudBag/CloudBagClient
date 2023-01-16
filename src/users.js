@@ -1,16 +1,26 @@
 const fs = require('fs');
 const path = require('path');
+const fetch = require('electron-fetch').default;
+const main = require('./main');
 
-exports.validateUser = (credentials) => {
-    let userData={
-        NickName:null,
-        password:null,
-        rango:null,
-    };
-    fetch("/login",{
-        method: 'POST',
-        body: credentials,
-        headers: new Headers()
-    })
-    return userData;
+exports.validateUser = async (credentials) => {
+  try {
+    let response = await fetch(main.url + '/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+          {nickName: credentials[0], Password: credentials[1]}),
+    });
+    if (response.status === 400){
+      return null;
+    }else {
+      return await response.json();
+    }
+  } catch (e) {
+    console.log('Error al conectar');
+    return null;
+  }
 }
+;

@@ -6,19 +6,8 @@ const {validateUser} = require('./users.js');
 
 let mainWindow;
 let user;
-
-let tray = null;
-app.whenReady().then(() => {
-  tray = new Tray('./public/images/logito.png');
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Item1', type: 'radio'},
-    {label: 'Item2', type: 'radio'},
-    {label: 'Item3', type: 'radio', checked: true},
-    {label: 'Item4', type: 'radio'},
-  ]);
-  tray.setToolTip('CloudBag');
-  tray.setContextMenu(contextMenu);
-});
+let url='http://10.0.0.18:3000';
+exports.url=url;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -38,7 +27,7 @@ const createWindow = () => {
   });
 
   // and load the html of the app.
-  mainWindow.loadURL(path.join(__dirname, 'views/login.ejs'));
+  mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'));
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -49,7 +38,6 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  startUp();
   createWindow();
 });
 
@@ -72,13 +60,14 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-ipcMain.on('loginForm-submit', function(event, formData) {
+ipcMain.on('loginForm-submit', async function(event, formData) {
   console.log('[User, password] ->', formData);
-  user = validateUser(formData);
+  user = await validateUser(formData)
   console.log(user);
-  if (user.rango === 'user' && user.NickName!==null && user.password!==null) {
+  if (user !== null) {
     mainWindow.loadFile(path.join(__dirname, 'views/home.ejs'));
   } else {
     mainWindow.reload();
   }
 });
+

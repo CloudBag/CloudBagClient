@@ -18,6 +18,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "ejs-electron": "^2.1.1",
+    "electron-fetch": "^1.9.1",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
