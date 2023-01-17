@@ -6,7 +6,7 @@ const {validateUser} = require('./users.js');
 
 let mainWindow;
 let user;
-let url='http://10.0.0.18:3000';
+let url='http://10.0.0.18:3000'; //hay que poner una pantallita que te pida la ip y de ahí sacamos el url (podría ser la misma del login)
 exports.url=url;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -70,4 +70,8 @@ ipcMain.on('loginForm-submit', async function(event, formData) {
     mainWindow.reload();
   }
 });
+
+ipcMain.on('url-request', function(event){
+  event.reply('url-reply', url);
+})
 
