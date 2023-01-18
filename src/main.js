@@ -114,3 +114,19 @@ ipcMain.on('download', function(event, url) {
 ipcMain.on('go-home', function(event) {
   mainWindow.loadFile(path.join(__dirname, 'views/home.ejs'));
 });
+
+ipcMain.on('logout-event', async function(event){
+  mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'))
+  try {
+    let response = await fetch(url + '/Logout');
+    console.log(response.status);
+  } catch (e) {
+    console.log(404);
+  }
+});
+
+ipcMain.on('change-password', async function(event){
+  console.log('change password');
+  //Hay que abrir un dialogo que pida clave vieja y nueva
+  //y mandarle un request al servidor
+});

@@ -4,19 +4,17 @@
         <h1>CloudBag</h1>
     </a>
 
-    <a href="./login.ejs">
-        <button id="LogOut" style="cursor: pointer">Logout</button>
+    <a>
+        <button id="ChangePass">Change Password</button>
+        <button id="LogOut">Logout</button>
     </a>
 
     <script>
-      document.getElementById('LogOut').addEventListener('click', async (e) => {
-        console.log(url);
-        try {
-          let response = await fetch(url + '/Logout');
-          console.log(response.status);
-        } catch (e) {
-          console.log(e);
-        }
+      document.getElementById('LogOut').addEventListener('click', (e) => {
+        ipcRenderer.send('logout-event');
       });
+      document.getElementById('ChangePass').addEventListener('click', (e) => {
+        ipcRenderer.send('change-password')
+      })
     </script>
 </nav>
