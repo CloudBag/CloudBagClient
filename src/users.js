@@ -5,6 +5,7 @@ const main = require('./main');
 
 exports.validateUser = async (credentials) => {
   try {
+    console.log(main.url);
     let response = await fetch(main.url + '/Login', {
       method: 'POST',
       headers: {

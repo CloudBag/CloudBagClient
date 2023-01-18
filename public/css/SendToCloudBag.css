@@ -84,3 +84,7 @@
 #AddNewFile > img{
     filter: invert();
 }
+
+Button{
+    cursor: pointer;
+}
