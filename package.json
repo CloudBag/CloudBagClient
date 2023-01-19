@@ -1,8 +1,8 @@
 {
   "name": "cloudbagclient",
-  "productName": "cloudbagclient",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "CloudBag",
+  "version": "2.0.0",
+  "description": "Cloud Bag - Almacenamiento de datos local",
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
