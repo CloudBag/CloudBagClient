@@ -38,15 +38,11 @@ exports.changePassword = async (credentials) => {
       body: JSON.stringify(
             {nickName:credentials[0], oldPassword: credentials[1], rango:credentials[2], newPassword: credentials[3]}),
     });
-    if (response.status === 400){
-      return null;
-    }else {
-      return await response.json();
-    };
+    return response;
   } catch (e) {
     console.log('Error al conectar');
     return null;
-  };
+  }
 };
 
 
