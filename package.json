@@ -13,9 +13,25 @@
   },
   "keywords": [],
   "author": {
-    "name": "Marco-Castro01",
-    "email": "casstroo8a2@gmail.com"
+    "name": "Bags United"
   },
+  "contributors": [
+    {
+      "name": "Eduardo Consalvo",
+      "email": "educon001@gmail.com",
+      "url": "https://github.com/Educon001"
+    },
+    {
+      "name": "Marco Castro",
+      "email": "castroo8a2@gmail.com",
+      "url": "https://github.com/Marco-Castro01"
+    },
+    {
+      "name": "Steiker Mieles",
+      "email": "steiker.m2002@gmail.com",
+      "url": "https://github.com/Steiks10"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "ejs-electron": "^2.1.1",

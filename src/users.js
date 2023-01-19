@@ -23,5 +23,31 @@ exports.validateUser = async (credentials) => {
     console.log('Error al conectar');
     return null;
   }
-}
-;
+};
+
+exports.changePassword = async (credentials) => {
+  try {
+    let response;
+    console.log(main.url);
+
+    response = await fetch(main.url + '/changePassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+            {nickName:credentials[0], oldPassword: credentials[1], rango:credentials[2], newPassword: credentials[3]}),
+    });
+    if (response.status === 400){
+      return null;
+    }else {
+      return await response.json();
+    };
+  } catch (e) {
+    console.log('Error al conectar');
+    return null;
+  };
+};
+
+
+

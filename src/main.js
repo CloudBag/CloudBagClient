@@ -4,6 +4,7 @@ const ejse = require('ejs-electron');
 const os = require('os');
 const {validateUser} = require('./users.js');
 const {default: fetch} = require('electron-fetch');
+const {changePassword} = require("./users");
 
 let mainWindow;
 let user;
@@ -19,21 +20,17 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    autoHideMenuBar:true,
     icon: './public/images/logito.png',
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
-
   // and load the html of the app.
   mainWindow.loadFile(path.join(__dirname, 'views/login.ejs'));
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
-
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.maximize();
-  });
 
   mainWindow.webContents.session.on('will-download', (event, item) => {
     item.setSaveDialogOptions({title: 'Guardar como'});
@@ -69,7 +66,7 @@ app.on('activate', () => {
 ipcMain.on('loginForm-submit', async function(event, formData, serverIp) {
   console.log('[User, password] ->', formData);
   console.log('ip ->', serverIp);
-  url = 'http://' + serverIp + ':3000';
+  url = 'http://' + serverIp +':3000';
   exports.url = url;
   console.log(url);
   user = await validateUser(formData);
@@ -86,6 +83,41 @@ ipcMain.on('loginForm-submit', async function(event, formData, serverIp) {
     });
     mainWindow.reload();
   }
+});
+
+ipcMain.on('changeForm-submit', async function(event, formData) {
+  console.log('probando change form ->', formData);
+  console.log(url);
+
+  if(formData[3]===formData[4] && formData[1]===user.password) {
+    let response = await changePassword(formData);
+    console.log(response.status);
+    if (response.status === 200) {
+      user.password = formData[3];
+      mainWindow.loadFile(path.join(__dirname, 'views/home.ejs'));
+    } else {
+      dialog.showMessageBox(null, {
+        type: 'error',
+        title: 'Server error',
+        message: 'No se pudo cambiar la contraseña',
+      });
+      mainWindow.reload();
+    }
+  }else{
+    dialog.showMessageBox(null, {
+      type: 'warning',
+      title: 'Failed',
+      message: 'Datos incorrectos',
+    });
+    mainWindow.reload();
+
+  }
+});
+
+
+ipcMain.on('user-request', function(event) {
+  console.log('user-request');
+  event.reply('user-reply', user);
 });
 
 ipcMain.on('url-request', function(event) {
@@ -125,8 +157,9 @@ ipcMain.on('logout-event', async function(event){
   }
 });
 
-ipcMain.on('change-password', async function(event){
+ipcMain.on('change-password', async function(event,formData){
   console.log('change password');
   //Hay que abrir un dialogo que pida clave vieja y nueva
   //y mandarle un request al servidor
+  mainWindow.loadFile(path.join(__dirname, 'views/changePassword.ejs'));
 });
